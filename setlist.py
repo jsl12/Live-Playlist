@@ -3,6 +3,7 @@ import requests
 import re
 from datetime import datetime
 
+
 class Setlist:
 
 	def __init__(self, url):
