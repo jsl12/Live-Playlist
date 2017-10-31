@@ -27,33 +27,35 @@ class gpmaa_playlist:
 
 	def setup_logging(self):
 		logger_name = '.'.join([__name__, __class__.__name__])
-		print(logger_name)
 		self.logger = logging.getLogger(logger_name)
 		logging.getLogger('gmusicapi.protocol.shared').setLevel(logging.INFO)
 		logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
 
 	def info(self, msg):
-		self.logger.info(str(msg))
+		self.logger.info(msg)
+
+	def debug(self, msg):
+		self.logger.debug(msg)
 
 	def make_playlist(self):
 		'Creates the playlist withing GPMAA'
 		if self.songIDs:
-			print("Creating playlist...")
+			self.info("Creating playlist...")
 			name = "%s - %s" % (self.setlist.artist,
 				self.setlist.date)
-			print(name)
+			self.info(name)
 			desc = "%s live at %s on %s" % (self.setlist.artist,
 				self.setlist.venue,
 				self.setlist.date)
-			print(desc)
+			self.info(desc)
 			self.id = self.api.create_playlist(name, desc)
-			print("Playlist id: %s" % self.id)
+			self.info("Playlist id: %s" % self.id)
 
 			self.api.add_songs_to_playlist(self.id, self.songIDs)
 		return self.id
 
 	def search_for_songs(self):
-		print("Finding song info...")
+		self.info("Finding song info...")
 		self.resdict = {name: [] for name in self.setlist.song_names}
 
 		for song_name, r in self.resdict.items():
@@ -61,19 +63,18 @@ class gpmaa_playlist:
 			self.info(query.center(50, '-'))
 			results = self.api.search(query)['song_hits']
 			results = [x['track'] for x in results]
-
 			r.extend(results)
 			self.info("%d results found" % len(results))
 
 	def print_results(self):
 		for k, r in self.resdict.items():
-			print("{:50}|{:35}|{:25}".format("Title", "Album", "Artist"))
+			self.info("{:50}|{:35}|{:25}".format("Title", "Album", "Artist"))
 			for result in r:
 				t = result['title']
 				alb = result['album']
 				art = result['artist']
-				print("{:50}|{:35}|{:25}".format(t, alb, art))
-				print("-" * 110)
+				self.info("{:50}|{:35}|{:25}".format(t, alb, art))
+				self.info("-" * 110)
 
 	def get_all_songIDs(self):
 		self.songIDs = []
@@ -89,7 +90,7 @@ class gpmaa_playlist:
 			songs = self.api.search(query)['song_hits']
 			self.songIDs.append(self.select_song(songs, songName))
 		except IndexError as e:
-			print("Song not found")
+			self.info("Song not found")
 		except UnicodeEncodeError:
 			pass
 
@@ -122,7 +123,7 @@ class gpmaa_playlist:
 				song[0])]
 			if live_versions:
 				id = live_versions[0][2]
-				print("%d Live versions found" % len(live_versions))
+				self.info("%d Live versions found" % len(live_versions))
 
 			s = '\n'
 			for i in range(len(song_versions)):
@@ -130,6 +131,6 @@ class gpmaa_playlist:
 			self.info(s)
 			return id
 
-	def clean(self):
-		print("Deleting playlist id: %s" % self.id)
+	def delete_playlist(self):
+		self.info("Deleting playlist id: %s" % self.id)
 		self.api.delete_playlist(self.id)
