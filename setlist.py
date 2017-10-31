@@ -7,13 +7,13 @@ class Setlist:
 
 	def __init__(self, url):
 		# print("Creating Setlist...")
-		self.createBS(url)
+		self.create_BS(url)
 		self.get_artist()
 		self.get_song_names()
 		self.get_venue()
 		self.get_date()
 
-	def createBS(self, url):
+	def create_BS(self, url):
 		# print("Getting website...")
 		r = requests.get(url).text
 
@@ -56,7 +56,9 @@ class Setlist:
 		self.date = self.date.strftime("%m/%d/%y")
 
 	def __str__(self):
-		return "{0}\n{1}\n{2}\n{3}".format(self.artist,
+		return "{0}\n{1}\n{2}\n{3}".format(
+			self.artist,
 			self.venue,
 			self.date,
 			str(self.song_names))
+	

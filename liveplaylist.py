@@ -3,7 +3,7 @@ from gmusicapi import Mobileclient, utils
 import logging
 
 utils.utils.per_client_logging = False
-print("gmusicapi logging monkey patch:", utils.utils.per_client_logging)
+print("gmusicapi logging monkey patch: {}".format(utils.utils.per_client_logging))
 
 
 class gpmaa_playlist:
