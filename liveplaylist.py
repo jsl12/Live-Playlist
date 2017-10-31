@@ -1,25 +1,39 @@
 from setlist import *
 from gmusicapi import Mobileclient, utils
 import logging
+from apikey import *
+
+mlog = logging.getLogger(__name__)
 
 utils.utils.per_client_logging = False
-print("gmusicapi logging monkey patch: {}".format(utils.utils.per_client_logging))
+mlog.debug("gmusicapi logging monkey patch: {}".format(utils.utils.per_client_logging))
 
 
 class gpmaa_playlist:
 	'Class to handle logging into the GPMAA server and creating the playlist'
 
 	def __init__(self, url, make=False):
+		self.setup_logging()
 		self.setlist = Setlist(url)
 		self.api = Mobileclient()
-		self.logged_in = self.api.login('lancaster.js@gmail.com',
-			'oitufqltzwpxdkau',
+		self.logged_in = self.api.login(EMAIL,
+			TOKEN,
 			Mobileclient.FROM_MAC_ADDRESS)
 		if self.logged_in:
 			# self.get_all_songIDs()
 			self.search_for_songs()
 			if make:
 				self.make_playlist()
+
+	def setup_logging(self):
+		logger_name = '.'.join([__name__, __class__.__name__])
+		print(logger_name)
+		self.logger = logging.getLogger(logger_name)
+		logging.getLogger('gmusicapi.protocol.shared').setLevel(logging.INFO)
+		logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
+
+	def info(self, msg):
+		self.logger.info(str(msg))
 
 	def make_playlist(self):
 		'Creates the playlist withing GPMAA'
@@ -44,17 +58,12 @@ class gpmaa_playlist:
 
 		for song_name, r in self.resdict.items():
 			query = ("%s %s" % (self.setlist.artist, song_name))
-			logging.info(query.center(50, '-'))
+			self.info(query.center(50, '-'))
 			results = self.api.search(query)['song_hits']
 			results = [x['track'] for x in results]
-			# results = [(x['title'],
-			# 			x['artist'],
-			# 			x['album'],
-			# 			x['storeId'])
-			# 			for x in results]
-			# logging.info(results)
+
 			r.extend(results)
-			logging.info("%d results found" % len(results))
+			self.info("%d results found" % len(results))
 
 	def print_results(self):
 		for k, r in self.resdict.items():
@@ -72,7 +81,7 @@ class gpmaa_playlist:
 			self.songID(name)
 
 	def songID(self, songName):
-		logging.info(songName.center(50, '-'))
+		self.info(songName.center(50, '-'))
 		try:
 			id = None
 			artist = self.setlist.artist
@@ -94,7 +103,7 @@ class gpmaa_playlist:
 
 		s = ' ' * 5
 		s += "%d songs" % len(results)
-		logging.info(s)
+		self.info(s)
 
 		if results:
 			found = results[0]
@@ -118,7 +127,7 @@ class gpmaa_playlist:
 			s = '\n'
 			for i in range(len(song_versions)):
 				s += str(song_versions[i]) + '\n'
-			logging.info(s)
+			self.info(s)
 			return id
 
 	def clean(self):
