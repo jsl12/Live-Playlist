@@ -1,5 +1,4 @@
-from bs4 import BeautifulSoup
-import requests
+import html_fetch
 import re
 from datetime import datetime
 
@@ -8,18 +7,11 @@ class Setlist:
 
 	def __init__(self, url):
 		# print("Creating Setlist...")
-		self.create_BS(url)
+		self.soup = html_fetch.create_soup(url)
 		self.get_artist()
 		self.get_song_names()
 		self.get_venue()
 		self.get_date()
-
-	def create_BS(self, url):
-		# print("Getting website...")
-		r = requests.get(url).text
-
-		# print("Creating BeautifulSoup...")
-		self.soup = BeautifulSoup(r, "html5lib")
 
 	def get_song_names(self):
 		# print("Finding songs...")
