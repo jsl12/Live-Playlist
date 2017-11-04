@@ -18,11 +18,11 @@ def process_soup(soup):
         processed.append(event)
     return processed
 
-def get_events(days_worth=1):
+def get_events(days_worth, max_events):
     page = 1
     events = []
     last_day = datetime.date.today() + datetime.timedelta(days=days_worth)
-    while True:
+    while len(events) <= max_events:
         new = process_soup(html_fetch.create_soup(create_url(page)))
         fetch_count = len(new)
         new = [e for e in new if e['date'] < last_day]
@@ -30,4 +30,4 @@ def get_events(days_worth=1):
         page += 1
         if(len(new) != fetch_count):
             break
-    return events
+    return events[:max_events]
