@@ -2,6 +2,7 @@
 *.sublime-project
 *.sublime-workspace
 *.pyc
-.ipynb_checkpoints
+.ipynb_checkpoints/
 apikey.py
 jupyter.bat
+
