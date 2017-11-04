@@ -41,9 +41,9 @@ class Playlist():
     def debug(self, msg):
         self.logger.debug(msg)
 
-    def create_playlist(self, song_ids, name, description=''):
+    def create_playlist(self, song_ids, name, description='', public=False):
         self.info("Creating {}".format(name))
-        self.id = self.api.create_playlist(name, description)
+        self.id = self.api.create_playlist(name, description, public)
         self.api.add_songs_to_playlist(self.id, song_ids)
 
     def delete_playlist(self):
