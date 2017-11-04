@@ -18,17 +18,13 @@ class Playlist():
             setlist generated from a list of bands that have upcoming concerts in an area
     '''
 
-    def __init__(self, url, make=False):
+    def __init__(self, make=False):
         self.setup_logging()
-        self.setlist = Setlist(url)
         self.api = Mobileclient()
         self.logged_in = self.api.login(EMAIL,
             TOKEN,
-            Mobileclient.FROM_MAC_ADDRESS)
-        if self.logged_in:
-            self.search_for_songs()
-            if make:
-                self.make_playlist()
+            # Mobileclient.FROM_MAC_ADDRESS)
+            DEVICE_ID)
 
     def setup_logging(self):
         logger_name = '.'.join([__name__, __class__.__name__])
@@ -36,16 +32,19 @@ class Playlist():
         logging.getLogger('gmusicapi.protocol.shared').setLevel(logging.INFO)
         logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
 
+    def error(self, msg):
+        self.logger.error(msg)
+
     def info(self, msg):
         self.logger.info(msg)
 
     def debug(self, msg):
         self.logger.debug(msg)
 
-    def create_playlist(self, name, description=''):
-        if hasattr(self, 'song_ids') and self.song_ids is not None:
-            self.id = self.api.create_playlist(name, description)
-            self.api.add_songs_to_playlist(self.id, self.songIDs)
+    def create_playlist(self, song_ids, name, description=''):
+        self.info("Creating {}".format(name))
+        self.id = self.api.create_playlist(name, description)
+        self.api.add_songs_to_playlist(self.id, song_ids)
 
     def delete_playlist(self):
         if hasattr(self, 'id') and self.id is not None:
