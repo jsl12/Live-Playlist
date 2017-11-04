@@ -23,3 +23,6 @@ class ArtistPlaylist(pl.Playlist):
         self.results = self.api.search(artist)['song_hits']
         self.results = [x['track'] for x in self.results]
         return self.results[0]['storeId']
+
+if __name__ == '__main__':
+    ap = ArtistPlaylist(["King Gizzard"])
