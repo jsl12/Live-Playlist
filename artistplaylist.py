@@ -1,10 +1,10 @@
 import playlist as pl
 
+
 class ArtistPlaylist(pl.Playlist):
     '''
     Playlist based on a list of artists
     '''
-
 
     def __init__(self):
         super().__init__()
@@ -15,6 +15,7 @@ class ArtistPlaylist(pl.Playlist):
     def songs_from_artist(self, artist):
         self.results[artist] = [x['track'] for x in self.api.search(artist)['song_hits']]
         return self.results[artist]
+
 
 if __name__ == '__main__':
     import logging
