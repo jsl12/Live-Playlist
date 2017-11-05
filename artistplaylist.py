@@ -13,14 +13,20 @@ class ArtistPlaylist(pl.Playlist):
             self.results = {}
 
     def search(self, artist):
-        res = self.api.search(artist)['song_hits']
-        res = [song['track'] for song in res]
+        '''
+        This is just a wrapper for Playlist.search that stores the results in a dictionary
+        with the artist searched for as the key
+        '''
+        res = super().search(artist)
+        self.results[artist] = res
         return res
 
-    def songs_from_artist(self, artist):
-        res = self.search(artist)
-        self.results[artist] = [song for song in res if artist in song['artist']]
-        return self.results[artist]
+    # This function is probably unnecessary now
+    # def songs_from_artist(self, artist):
+    #     res = self.search(artist)
+    #     # Filters out songs that have a mismatched artist
+    #     self.results[artist] = [song for song in res if artist in song['artist']]
+    #     return self.results[artist]
 
 
 if __name__ == '__main__':

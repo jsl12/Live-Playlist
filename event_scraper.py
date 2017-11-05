@@ -1,7 +1,5 @@
 import html_fetch
-import re
 import datetime
-from pprint import pprint
 
 BASE_URL = 'https://www.bandsintown.com/cities/austin-tx?page='
 

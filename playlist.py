@@ -41,6 +41,18 @@ class Playlist():
     def debug(self, msg):
         self.logger.debug(msg)
 
+    def search(self, query):
+        '''
+        This function got pulled to the parent class because we'll always be searching
+        for things and wanting the song results. They're always going to have to be
+        processed this way because of how the search result is formatted.
+
+        The result is a list of song dictionaries with keys such as storeId, artist, etc.
+        '''
+        res = self.api.search(artist)['song_hits']
+        res = [song['track'] for song in res]
+        return res
+
     def create_playlist(self, song_ids, name, description='', public=False):
         self.info("Creating {}".format(name))
         self.id = self.api.create_playlist(name, description, public)
