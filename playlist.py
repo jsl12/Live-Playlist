@@ -49,7 +49,7 @@ class Playlist():
 
         The result is a list of song dictionaries with keys such as storeId, artist, etc.
         '''
-        res = self.api.search(artist)['song_hits']
+        res = self.api.search(query)['song_hits']
         res = [song['track'] for song in res]
         return res
 

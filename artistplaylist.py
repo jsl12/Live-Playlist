@@ -21,19 +21,12 @@ class ArtistPlaylist(pl.Playlist):
         self.results[artist] = res
         return res
 
-    # This function is probably unnecessary now
-    # def songs_from_artist(self, artist):
-    #     res = self.search(artist)
-    #     # Filters out songs that have a mismatched artist
-    #     self.results[artist] = [song for song in res if artist in song['artist']]
-    #     return self.results[artist]
-
 
 if __name__ == '__main__':
     import logging
     logging.basicConfig(level=logging.INFO)
     ap = ArtistPlaylist()
-    ap.songs_from_artist("King Gizzard")
+    ap.search("King Gizzard")
     print("IDs of songs found")
     print([song['storeId'] for song in ap.results["King Gizzard"]])
     ap.api.logout()
