@@ -5,8 +5,10 @@ from pprint import pprint
 
 BASE_URL = 'https://www.bandsintown.com/cities/austin-tx?page='
 
+
 def create_url(page=1):
     return BASE_URL + str(page)
+
 
 def process_soup(soup):
     events = soup.select('tr[itemtype*=schema.org/MusicEvent]')
@@ -17,6 +19,7 @@ def process_soup(soup):
         event['artist'] = ev.select_one('.artist').text.strip()
         processed.append(event)
     return processed
+
 
 def get_events(days_worth, max_events):
     page = 1
