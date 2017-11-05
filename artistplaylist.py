@@ -12,8 +12,14 @@ class ArtistPlaylist(pl.Playlist):
             self.info("GPMAA login successful")
             self.results = {}
 
+    def search(self, artist):
+        res = self.api.search(artist)['song_hits']
+        res = [song['track'] for song in res]
+        return res
+
     def songs_from_artist(self, artist):
-        self.results[artist] = [x['track'] for x in self.api.search(artist)['song_hits']]
+        res = self.search(artist)
+        self.results[artist] = [song for song in res if artist in song['artist']]
         return self.results[artist]
 
 
@@ -22,5 +28,6 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     ap = ArtistPlaylist()
     ap.songs_from_artist("King Gizzard")
+    print("IDs of songs found")
     print([song['storeId'] for song in ap.results["King Gizzard"]])
     ap.api.logout()
