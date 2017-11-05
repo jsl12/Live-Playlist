@@ -13,13 +13,15 @@ class ArtistPlaylist(pl.Playlist):
             self.results = {}
 
     def songs_from_artist(self, artist):
-        self.results[artist] = [x['track'] for x in self.api.search(artist)['song_hits']]
+        res = self.api.search(artist)['song_hits']
+        self.results[artist] = [x['track'] for x in res if artist in x['track']['artist']]
         return self.results[artist]
 
 if __name__ == '__main__':
     import logging
     logging.basicConfig(level=logging.INFO)
     ap = ArtistPlaylist()
-    ap.songs_from_artist("King Gizzard")
-    print([song['storeId'] for song in ap.results["King Gizzard"]])
+    artist = "Lonelyland"
+    ap.songs_from_artist("Lonelyland")
+    print([song['storeId'] for song in ap.results[artist]])
     ap.api.logout()
