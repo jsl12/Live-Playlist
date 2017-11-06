@@ -25,6 +25,8 @@ class Playlist():
             TOKEN,
             # Mobileclient.FROM_MAC_ADDRESS)
             DEVICE_ID)
+        if self.logged_in:
+            self.info("Logged into GPMAA successfully")
 
     def setup_logging(self):
         logger_name = '.'.join([__name__, __class__.__name__])
