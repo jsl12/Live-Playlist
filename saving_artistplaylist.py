@@ -13,7 +13,7 @@ class SavingArtistPlaylist(ArtistPlaylist):
     def search(self, artist):
         res = super().search(artist)
         # Perform set union using the | operator
-        self.genres |= set([r['genre'] for r in res])
+        self.genres |= set([r['genre'] for r in res if 'genre' in r])
         return res
 
     def save(self):
