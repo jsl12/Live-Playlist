@@ -9,7 +9,7 @@ utils.utils.per_client_logging = False
 mlog.debug("gmusicapi logging monkey patch: {}".format(utils.utils.per_client_logging))
 
 
-class gpmaa_playlist:
+class LivePlaylist:
     'Class to handle logging into the GPMAA server and creating the playlist'
 
     def __init__(self, url, make=False):

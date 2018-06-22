@@ -9,6 +9,6 @@ test_url = ("https://www.setlist.fm/setlist/king-gizzard-and-the-lizard-wizard/2
 setlist = lp.Setlist(test_url)
 print(setlist)
 
-p = lp.gpmaa_playlist(test_url)
+p = lp.LivePlaylist(test_url)
 p.make_playlist()
 p.api.logout()
