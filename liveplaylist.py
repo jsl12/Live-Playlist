@@ -36,9 +36,7 @@ class gpmaa_playlist:
     def debug(self, msg):
         self.logger.debug(msg)
 
-    def make_playlist(self, sort_type='first'):
-        # Creates the playlist within GPMAA based on a sorting type
-
+    def make_playlist(self):
         self.songIDs = [self.resdict[s][0]['storeId'] for s in self.resdict.keys()]
         self.info("Creating playlist...")
         name = "{} - {}".format(self.setlist.artist, self.setlist.date)
@@ -50,7 +48,7 @@ class gpmaa_playlist:
         self.id = self.api.create_playlist(name, desc)
         self.info("Playlist id: {}".format(self.id))
         self.debug("Song IDs {!s}".format(self.songIDs))
-        # self.api.add_songs_to_playlist(self.id, self.songIDs)
+        self.api.add_songs_to_playlist(self.id, self.songIDs)
         return self.id
 
     def search_for_songs(self):
