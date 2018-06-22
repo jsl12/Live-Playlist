@@ -63,6 +63,9 @@ class gpmaa_playlist:
             r.extend(results)
             self.debug("%d results found" % len(results))
 
+        # Remove songs that had 0 results
+        self.resdict = {name: results for name, results in self.resdict.items() if len(results) > 0}
+
     def print_results(self):
         for k, r in self.resdict.items():
             self.info("{:50}|{:35}|{:25}".format("Title", "Album", "Artist"))
