@@ -61,7 +61,7 @@ class gpmaa_playlist:
             results = self.api.search(query)['song_hits']
             results = [x['track'] for x in results]
             r.extend(results)
-            self.debug("%d results found" % len(results))
+            self.debug('{} results found'.format(len(results)))
 
         # Remove songs that had 0 results
         self.resdict = {name: results for name, results in self.resdict.items() if len(results) > 0}
