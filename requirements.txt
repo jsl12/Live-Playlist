@@ -3,3 +3,4 @@ html5lib
 requests
 gmusicapi
 jellyfish
+pandas
